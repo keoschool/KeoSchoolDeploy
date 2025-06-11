@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online School Platform</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        .header { background: #1e40af; color: white; padding: 1rem; }
+        .nav { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: bold; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { color: white; text-decoration: none; }
+        .nav-links a:hover { text-decoration: underline; }
+        .main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .hero { text-align: center; padding: 3rem 0; }
+        .hero h1 { font-size: 3rem; margin-bottom: 1rem; color: #1e40af; }
+        .hero p { font-size: 1.2rem; margin-bottom: 2rem; color: #64748b; }
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 3rem 0; }
+        .feature { background: #f8fafc; padding: 2rem; border-radius: 8px; border: 1px solid #e2e8f0; }
+        .feature h3 { color: #1e40af; margin-bottom: 1rem; }
+        .btn { background: #1e40af; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; text-decoration: none; display: inline-block; }
+        .btn:hover { background: #1d4ed8; }
+        .auth-section { background: #f1f5f9; padding: 2rem; border-radius: 8px; margin: 2rem 0; }
+        .loading { display: flex; justify-content: center; align-items: center; min-height: 200px; color: #64748b; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">Online School Platform</div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/courses">Courses</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/login">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="hero">
+            <h1>Welcome to Online School Platform</h1>
+            <p>Comprehensive digital learning experience for UK educational institutions</p>
+            <a href="/dashboard" class="btn">Get Started</a>
+        </section>
+
+        <section class="features">
+            <div class="feature">
+                <h3>Advanced Authentication</h3>
+                <p>Secure login system with role-based access for students, teachers, and administrators.</p>
+            </div>
+            <div class="feature">
+                <h3>AI Study Assistant</h3>
+                <p>Intelligent learning support powered by advanced AI to help students excel.</p>
+            </div>
+            <div class="feature">
+                <h3>Canvas LMS Integration</h3>
+                <p>Seamless integration with Canvas Learning Management System for comprehensive education tools.</p>
+            </div>
+            <div class="feature">
+                <h3>Curriculum Aligned</h3>
+                <p>Content aligned with Key Stages 3, 4, and 5 including Oak Academy resources.</p>
+            </div>
+        </section>
+
+        <section class="auth-section">
+            <h2>Ready to Start Learning?</h2>
+            <p>Join thousands of students and educators using our platform.</p>
+            <div style="margin-top: 1rem;">
+                <a href="/login" class="btn">Login</a>
+                <a href="/register" class="btn" style="margin-left: 1rem; background: #64748b;">Register</a>
+            </div>
+        </section>
+    </main>
+
+    <div id="root">
+        <div class="loading">
+            <p>React application initializing...</p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize basic functionality
+        console.log('Online School Platform - Production Build');
+        
+        // Simple router simulation
+        function navigate(path) {
+            window.history.pushState({}, '', path);
+            updateContent(path);
+        }
+        
+        function updateContent(path) {
+            const root = document.getElementById('root');
+            
+            switch(path) {
+                case '/login':
+                    root.innerHTML = '<div class="loading">Login page loading...</div>';
+                    break;
+                case '/dashboard':
+                    root.innerHTML = '<div class="loading">Dashboard loading...</div>';
+                    break;
+                case '/courses':
+                    root.innerHTML = '<div class="loading">Courses loading...</div>';
+                    break;
+                default:
+                    root.innerHTML = '<div class="loading">Application ready</div>';
+            }
+        }
+        
+        // Handle navigation clicks
+        document.addEventListener('click', function(e) {
+            if (e.target.tagName === 'A' && e.target.getAttribute('href').startsWith('/')) {
+                e.preventDefault();
+                navigate(e.target.getAttribute('href'));
+            }
+        });
+        
+        // Initialize
+        updateContent(window.location.pathname);
+        
+        // API health check
+        fetch('/api/health')
+            .then(res => res.json())
+            .then(data => {
+                console.log('Server status:', data);
+                if (data.status === 'ok') {
+                    document.getElementById('root').innerHTML = '<div class="loading">✓ Connected to server</div>';
+                }
+            })
+            .catch(err => {
+                console.error('Server connection failed:', err);
+            });
+    </script>
+</body>
+</html>
